@@ -1,6 +1,7 @@
 package com.flatironschool.javacs;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -60,8 +61,16 @@ public class WikiSearch {
 	 * @return New WikiSearch object.
 	 */
 	public WikiSearch or(WikiSearch that) {
-        // FILL THIS IN!
-		return null;
+		WikiSearch result = new WikiSearch(this.map);
+		for(String url: that.map.keySet()) {
+			if(result.map.containsKey(url)) {
+				result.map.put(url, result.map.get(url) + that.map.get(url));
+			}
+			else {
+				result.map.put(url, that.map.get(url));
+			}
+		}
+		return result;
 	}
 	
 	/**
@@ -71,8 +80,14 @@ public class WikiSearch {
 	 * @return New WikiSearch object.
 	 */
 	public WikiSearch and(WikiSearch that) {
-        // FILL THIS IN!
-		return null;
+		Map <String, Integer> space = new HashMap <String, Integer>();
+		for(String url: this.map.keySet()) {
+			if(this.map.containsKey(url) && that.map.containsKey(url)) {
+				space.put(url, that.map.get(url) + this.map.get(url));
+			}
+		}
+		WikiSearch result = new WikiSearch(space);
+		return result;
 	}
 	
 	/**
@@ -82,8 +97,13 @@ public class WikiSearch {
 	 * @return New WikiSearch object.
 	 */
 	public WikiSearch minus(WikiSearch that) {
-        // FILL THIS IN!
-		return null;
+		WikiSearch result = new WikiSearch(this.map);
+		for(String url: that.map.keySet()) {
+			if(this.map.containsKey(url)) {
+				result.map.remove(url);
+			}
+		}
+		return result;
 	}
 	
 	/**
@@ -104,8 +124,17 @@ public class WikiSearch {
 	 * @return List of entries with URL and relevance.
 	 */
 	public List<Entry<String, Integer>> sort() {
-        // FILL THIS IN!
-		return null;
+		List<Integer> sorter = new ArrayList<Integer>();
+		List<Entry<String, Integer>> result = new ArrayList<Entry<String, Integer>>();
+		for(Integer value: map.values()) {
+			sorter.add(value);
+			result.add(null);
+		}
+		java.util.Collections.sort(sorter);
+		for(Entry<String, Integer> entry: map.entrySet()) {
+			result.set(sorter.indexOf(entry.getValue()), entry);
+		}
+		return result;
 	}
 
 	/**
