@@ -1,6 +1,7 @@
 package com.flatironschool.javacs;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -143,16 +144,18 @@ public class WikiSearch {
 	 * @param term
 	 * @param index
 	 * @return
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
 	 */
-	public static WikiSearch search(String term, JedisIndex index) {
+	public static WikiSearch search(String term, JedisIndex index) throws ClassNotFoundException, SQLException {
 		Map<String, Integer> map = index.getCounts(term);
 		return new WikiSearch(map);
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
 		
 		// make a JedisIndex
-		Jedis jedis = JedisMaker.make();
+		SQLDatabase jedis = new SQLDatabase();
 		JedisIndex index = new JedisIndex(jedis); 
 		
 		// search for the first term
